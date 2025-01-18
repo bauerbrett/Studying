@@ -1,6 +1,6 @@
 ## Security Engineering Notes
 
-These are notes I took while studying security engineering to get into big tech.
+These are notes for studying. They are primarily used for coding, data structures, and algorithims right now because I need to improve the most on those.
 
 ## Topics
 
