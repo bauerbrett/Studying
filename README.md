@@ -24,8 +24,9 @@ Imagine you're making a shopping list. What do you need? Probably fruits, vegeta
     Float: These are real numbers, like the weight of the bananas you're planning to buy.
     Character: A single letter, number, or symbol, like 'A' or '3'.
     Boolean: This type holds either a true or false value.
-    Non-Primitive Data Structures
-    In contrast, non-primitive data structures are more complex. They are derived from the primitive data structures and can be further divided into linear and non-linear types.
+
+Non-Primitive Data Structures
+In contrast, non-primitive data structures are more complex. They are derived from the primitive data structures and can be further divided into linear and non-linear types.
 
     Linear Data Structures
     In linear data structures, elements are arranged in a sequential manner. Think of them as a line of people waiting for a bus. Some examples are:
