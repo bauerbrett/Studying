@@ -1,4 +1,4 @@
-## FAANG Security Engineering Notes
+## Security Engineering Notes
 
 These are notes I took while studying security engineering to get into big tech.
 
