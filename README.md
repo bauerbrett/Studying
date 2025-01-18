@@ -16,7 +16,6 @@ These are notes for studying. They are primarily used for coding, data structure
     - Delete: Remove a key-value pair.
     - Examples: Item #1 in main.go
 
-Let's explore some examples of these data structures.
 
 Primitive Data Structures
 Imagine you're making a shopping list. What do you need? Probably fruits, vegetables, snacks, maybe some cleaning supplies. Each of these items can be considered an individual data element - a building block of your list. Primitive data structures in programming are similar. They are the simplest form of data structures and include:
