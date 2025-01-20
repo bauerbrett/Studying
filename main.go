@@ -4,6 +4,11 @@ import "fmt"
 
 func main() {
 
+	one := 13
+	two := 2
+	three := one % two
+	fmt.Println(one / two)
+	fmt.Println(three)
 	// #1
 	employee := make(map[string]string)
 
@@ -48,4 +53,5 @@ func main() {
 		}
 	}
 	fmt.Println("Target not found")
+
 }

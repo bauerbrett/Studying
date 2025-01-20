@@ -72,7 +72,6 @@ func (s *Solution) balancedParanth(st string) bool {
 		}
 
 	}
-
 	return stack.IsEmpty()
 }
 
