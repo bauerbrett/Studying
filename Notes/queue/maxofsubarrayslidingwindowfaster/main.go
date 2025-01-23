@@ -1,11 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Solution struct{}
 
-//See queue readme for more details on sliding window.
-//This is a sliding window problem
+// See queue readme for more details on sliding window.
+// This is a sliding window problem
 // maxSub finds the maximum element for each subarray of size k
 func (s *Solution) maxSub(arr []int, k int) []int {
 	dq := []int{}
