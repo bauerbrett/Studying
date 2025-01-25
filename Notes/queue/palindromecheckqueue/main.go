@@ -9,7 +9,7 @@ type Solution struct{}
 
 func (s *Solution) checkPalindrome(st string) bool {
 
-	queue := []rune{}
+	queue := []rune{} //dequeue a double ended queue to remove from front and back
 
 	formatStr := strings.ToLower(st)
 	formatStr = strings.Replace(formatStr, " ", "", -1) // replace the space " " with not space "", and -1 means do it for all occurences of " "
