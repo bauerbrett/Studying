@@ -69,6 +69,7 @@ Binary trees are a type of tree where each node can have at most two children, c
 
 - Full Tree:
 In a full tree, every node has either zero children (leaf node) or two children. There are no nodes with only one child. Full trees are also known as proper binary trees.
+![alt text](image.png)
 
 - Complete Tree:
 A complete tree is a binary tree in which all levels are filled, except possibly the last level. The last level must strictly be filled from left to right. Data structures like Heap uses complete binary trees for efficient operations.
