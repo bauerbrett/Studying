@@ -73,7 +73,7 @@ In a full tree, every node has either zero children (leaf node) or two children.
 ![alt text](images/image.png)
 
 - Complete Tree:
-A complete tree is a binary tree in which all levels are filled, except possibly the last level. The last level must strictly be filled from left to right. Data structures like Heap uses complete binary trees for efficient operations.
+A complete tree is a binary tree in which all levels are filled, except possibly the last level. The last level must strictly be filled from left to right. Data structures like Heap uses complete binary trees for efficient operations.               j
 ![alt text](images/image-5.png)
 
 - Balanced Tree:
