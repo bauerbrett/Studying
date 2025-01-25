@@ -66,23 +66,23 @@ Levels in a tree are defined based on the distance from the root node. The root 
 ### 5. Types of Trees
 - Binary Trees:
 Binary trees are a type of tree where each node can have at most two children, commonly referred to as the left child and the right child. The structure of a binary tree makes it a fundamental and widely used data structure in computer science.
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 - Full Tree:
 In a full tree, every node has either zero children (leaf node) or two children. There are no nodes with only one child. Full trees are also known as proper binary trees.
-![alt text](image.png)
+![alt text](images/image.png)
 
 - Complete Tree:
 A complete tree is a binary tree in which all levels are filled, except possibly the last level. The last level must strictly be filled from left to right. Data structures like Heap uses complete binary trees for efficient operations.
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
 - Balanced Tree:
 Balanced trees are binary trees where the difference in height between the left and right subtrees of any node in the tree is not more than 1. This ensures the tree remains reasonably balanced, preventing skewed structures and maintaining optimal search and insertion times.
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 - Multi-way Tree:
 Unlike binary trees, multi-way trees allow nodes to have more than two children. Each node can have multiple branches, making multi-way trees more flexible in representing hierarchical data.
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 
 
