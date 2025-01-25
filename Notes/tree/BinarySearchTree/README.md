@@ -10,7 +10,7 @@ A Binary Search Tree is a binary tree in which each node has at most two childre
 
 **Example**:  
 Consider the following BST:  
-![alt text](image.png)  
+![alt text](images/image.png)  
 
 In this example, the tree satisfies the BST property since, for each node, all nodes in its left subtree have values less than the node's value, and all nodes in its right subtree have values greater than the node's value.
 
