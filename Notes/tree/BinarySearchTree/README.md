@@ -247,10 +247,6 @@ The following methods handle the deletion process:
 
 ## Implementation
 
-### `findMin` - Helper Function
-
-Finds the minimum node in a given subtree.
-
 ```go
 // Helper function to find the minimum node in a subtree
 func (bst *BST) findMin(node *Node) *Node {
