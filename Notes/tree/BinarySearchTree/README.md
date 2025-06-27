@@ -54,7 +54,7 @@ The class has two constructors:
 - `Node()`: Default constructor that initializes `left` and `right` pointers to null (0).
 - `Node(int v)`: Constructor that takes a value `v` and initializes `info` with it. It also sets `left` and `right` pointers to null.
 
-### ADT Class
+### BST Abstract Data Type (ADT) Class
 
 Now, let's look at the BST ADT class definition.
 
