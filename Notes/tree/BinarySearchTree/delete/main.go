@@ -52,7 +52,6 @@ func delete(node *TreeNode, val int) *TreeNode {
 		}
 	}
 	return node
-
 }
 
 func inorder(root *TreeNode) {
