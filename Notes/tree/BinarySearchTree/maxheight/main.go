@@ -11,6 +11,8 @@ type TreeNode struct {
 /*
 This is a depth first search used to find the max height of bst
 
+Don't try to unfold the recursion. Think about the recursion on a single level. If it works on any individual level then it works overall.
+
 */
 
 func maxHeight(root *TreeNode) int {
@@ -46,6 +48,8 @@ but if there is one side nil, then we recursively search that side because we ne
 
 4. These will build back up until we find the smallest. We don't need variables for the first root.left and root.rigth == nil if statements because the funcs
 themselelves will return the ints back.
+
+Note: Don't try to unfold the recursion. Think about the recursion on a single level. If it works on any individual level then it works overall.
 */
 func minHeight(root *TreeNode) int {
 	if root == nil {
