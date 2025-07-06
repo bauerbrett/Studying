@@ -7,6 +7,8 @@ A **Hashtable** is a data structure that stores **key-value pairs** and allows *
 ## 🔐 Real-World Analogy
 
 Imagine a locker system where:
+
+
 ![alt text](image.png)
 
 - Your **name** is the **key**.
