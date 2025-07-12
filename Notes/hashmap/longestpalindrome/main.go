@@ -5,7 +5,6 @@ import "fmt"
 // count letters in string and put in map. Add all evens up add odds but subtrack -1 from them. Add all up and this is longest.
 // if the total length is odd than add one char for a middle character
 func longestPalindrome(p string) int {
-
 	charCount := map[byte]int{}
 	for i := 0; i < len(p); i++ {
 		charCount[p[i]]++
@@ -25,7 +24,6 @@ func longestPalindrome(p string) int {
 		count++
 	}
 	return count
-
 }
 
 func main() {
