@@ -13,6 +13,8 @@ After taking gifts off we square root them, the square root number gets pushed b
 So if k is 2 we will pop and push 2 gift piles and keep their square roots. Because it is a heap, when we push back the square root,
 the heap will reorder and max gift pile will be on top for next pop.
 
+They worded it so bad. Basically just push square root back onto queue after poping it and calculating square root
+
 You're presented with several piles of gifts, with each pile containing a certain number of gifts. Every second, you'll engage in the following activity:
 
 Pick the pile that contains the highest number of gifts. If multiple piles share this distinction, you can select any of them.
