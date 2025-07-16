@@ -22,6 +22,8 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// "abcdaef"
 func slidingWindow(str string) int {
 	set := map[byte]bool{}
 	start, end, maxLength := 0, 0, 0

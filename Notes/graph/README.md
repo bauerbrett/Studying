@@ -250,3 +250,80 @@ Graphs can vary based on how their edges behave, whether they carry weights, and
 
 > ✅ Understanding the **types of graphs** helps in choosing the right algorithms, especially for problems involving **search, traversal, shortest paths, cycles, and connectivity**.
 
+# Graph Representations
+
+Graphs can be represented in multiple ways depending on the use case. The two most common methods are:
+
+- Adjacency Matrix
+- Adjacency List
+
+Let’s break down both approaches with examples for undirected and directed graphs.
+
+---
+
+## 1 Adjacency Matrix
+
+An adjacency matrix is a 2D array (or matrix) used to represent the presence or absence of edges between vertices.
+
+- The matrix is of size N × N, where N is the number of vertices.
+- Each cell (i, j) indicates whether there’s an edge from vertex i to vertex j.
+
+### Adjacency matrix for Undirected Graph
+
+- If an edge exists between vertex i and j, then both A[i][j] and A[j][i] are set to 1.
+- If no edge exists, both entries are 0.
+- The matrix is symmetric across the diagonal.
+
+#### Example
+![alt text](image-18.png)
+Undirected Graph with 4 Edges (A-B, B-C, C-D, D-A)  
+ 
+![alt text](image-19.png)
+Adjacency Matrix for the Above Graph with 4 Edges (A-B, B-C, C-D, D-A)  
+ 
+
+---
+
+### Adjacency matrix for directed graphs
+
+In a directed graph with N vertices, the adjacency matrix A will also be an N x N matrix. For a directed edge from vertex i to vertex j, the corresponding entry in the matrix () will have the value of 1, indicating the presence of an edge from i to j. If there is no edge from vertex i to vertex j, the matrix entry will have the value of 0.
+
+#### Example of a directed graph with 4 vertices (A, B, C, D) and 5 directed edges (A->B, A->C, C->D, D->B, D->C):
+
+![alt text](image-20.png)
+Directed Graph with 5 Edges (A->B, A->C, C->D, D->B, D->C)  
+![alt text](image-21.png)
+
+_Image_  
+The above figure explains the adjacency matrix of the directed graph in such a way that there is an edge between vertices A-C and A-B so 1 is placed there.
+
+---
+
+## Adjacency List
+
+An adjacency list stores each vertex alongside a list of its neighbors. It is space-efficient for sparse graphs (graphs with fewer edges).
+
+- Each node maps to a list of connected nodes.
+- It is commonly implemented using arrays or hash maps with linked lists or dynamic arrays.
+
+### Representing undirected graph using adjacency list
+
+In an undirected graph, the edges between vertices have no direction. If vertex A is connected to vertex B, then vertex B is also connected to vertex A. As a result, the adjacency list for an undirected graph is symmetric. Here is an example of a undirected graph with four vertices (A, B, C, D) and four edges.
+
+![alt text](image-22.png)
+ 
+Here is the adjacency list for the above-undirected graph. From vertex A there is an edge to vertex B and C in the graph. So in the adjacency list, there are two nodes from node A.
+
+![alt text](image-23.png) 
+
+### Representing directed graphs using adjacency list
+
+In a directed graph, the edges between vertices have a direction. If vertex X is connected to vertex Y, it does not necessarily mean that vertex Y is connected to vertex X. As a result, the adjacency list for a directed graph is not symmetric.
+
+#### Example of a directed graph with 4 vertices (A, B, C, D) and 4 directed edges (A->B, A->C, C->D, D->B):
+
+![alt text](image-24.png)
+
+Here is the adjacency list for the above directed graph. From vertex A there is an edge to vertex B and C in the graph. So in the adjacency list, there are two nodes from node A. From vertex B there is no edge coming out so the adjacency list contains no further node from node B.
+
+![alt text](image-25.png)
