@@ -276,9 +276,11 @@ An adjacency matrix is a 2D array (or matrix) used to represent the presence or 
 
 #### Example
 ![alt text](image-18.png)
+
 Undirected Graph with 4 Edges (A-B, B-C, C-D, D-A)  
  
 ![alt text](image-19.png)
+
 Adjacency Matrix for the Above Graph with 4 Edges (A-B, B-C, C-D, D-A)  
  
 
@@ -291,10 +293,11 @@ In a directed graph with N vertices, the adjacency matrix A will also be an N x 
 #### Example of a directed graph with 4 vertices (A, B, C, D) and 5 directed edges (A->B, A->C, C->D, D->B, D->C):
 
 ![alt text](image-20.png)
-Directed Graph with 5 Edges (A->B, A->C, C->D, D->B, D->C)  
-![alt text](image-21.png)
 
-_Image_  
+Directed Graph with 5 Edges (A->B, A->C, C->D, D->B, D->C)  
+
+![alt text](image-21.png)
+ 
 The above figure explains the adjacency matrix of the directed graph in such a way that there is an edge between vertices A-C and A-B so 1 is placed there.
 
 ---
