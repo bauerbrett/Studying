@@ -327,3 +327,67 @@ In a directed graph, the edges between vertices have a direction. If vertex X is
 Here is the adjacency list for the above directed graph. From vertex A there is an edge to vertex B and C in the graph. So in the adjacency list, there are two nodes from node A. From vertex B there is no edge coming out so the adjacency list contains no further node from node B.
 
 ![alt text](image-25.png)
+
+
+# Graph Representations
+
+🧠 **Adjacency List**  
+Each node `i` has a list of neighbors: `graph[i] = [neighbor1, neighbor2, ...]`
+
+You iterate over actual values in that list.
+
+```go
+for _, neighbor := range graph[i] {
+    // use 'neighbor' directly
+}
+```
+
+🧠 **Adjacency Matrix**  
+You have a full 2D matrix `graph[i][j]`, where:  
+- `1` means node `i` is connected to `j`  
+- `0` means no connection  
+
+You iterate over indices, and then check if there's a connection:
+
+```go
+for j := 0; j < n; j++ {
+    if graph[i][j] == 1 {
+        // node 'j' is a neighbor of 'i'
+    }
+}
+```
+
+🧪 **Example for Contrast**  
+For a graph where `0` is connected to `1` and `2`:
+
+**Adjacency List:**
+```go
+graph := [][]int{
+    0: {1, 2},
+    1: {0},
+    2: {0},
+}
+```
+Looping:
+```go
+for _, neighbor := range graph[0] {
+    fmt.Println(neighbor) // prints 1, then 2
+}
+```
+
+**Adjacency Matrix:**
+```go
+graph := [][]int{
+    {0, 1, 1},
+    {1, 0, 0},
+    {1, 0, 0},
+}
+```
+Looping:
+```go
+for j := 0; j < 3; j++ {
+    if graph[0][j] == 1 {
+        fmt.Println(j) // prints 1, then 2
+    }
+}
+```
