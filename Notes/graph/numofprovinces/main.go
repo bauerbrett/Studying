@@ -27,7 +27,7 @@ the visits to the cities are not count++ because they are technically still in t
 a city that was already visited in one of the dfs calls, or it will not have been visited and will count++ and then go and recursively visit that one.
 */
 
-func numProvinces(l [][]int, node int) int {
+func numProvinces(l [][]int) int {
 	n := len(l)
 	//fmt.Println(l[0][3])
 	visited := make([]bool, len(l))
@@ -55,5 +55,5 @@ func numProvinces(l [][]int, node int) int {
 
 func main() {
 	l := [][]int{{1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 1, 0}, {1, 0, 0, 1}}
-	fmt.Println(numProvinces(l, 0))
+	fmt.Println(numProvinces(l))
 }

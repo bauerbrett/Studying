@@ -3,18 +3,18 @@ package main
 import "fmt"
 
 type Graph struct {
-	vert   int
-	matrix [][]int
+	vert int
+	list [][]int
 }
 
 func Constructor(v int) *Graph {
-	g := &Graph{vert: v, matrix: make([][]int, v)}
+	g := &Graph{vert: v, list: make([][]int, v)}
 	return g
 }
 
 func (g *Graph) addEdges(a, b int) {
-	g.matrix[a] = append(g.matrix[a], b)
-	g.matrix[b] = append(g.matrix[b], a)
+	g.list[a] = append(g.list[a], b)
+	g.list[b] = append(g.list[b], a)
 }
 
 func pathExist(g *Graph, start, end int) bool {
@@ -27,7 +27,7 @@ func pathExist(g *Graph, start, end int) bool {
 			return true
 		}
 		path := false
-		for _, neighbor := range g.matrix[a] {
+		for _, neighbor := range g.list[a] {
 			if !visited[neighbor] {
 				path = path || dfs(g, neighbor, end)
 				/* same as
