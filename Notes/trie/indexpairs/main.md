@@ -1,4 +1,4 @@
-package main
+package main1
 
 import (
 	"fmt"
@@ -34,8 +34,8 @@ func (s *Solution) IndexPairs(text string, words []string) [][]int {
 	res := [][]int{}
 	for i := 0; i < len(text); i++ { //first loop gest teh first char of word
 		node := s.root
-		for j := i; j < len(text); j++ { //second loop starts at first char and extends as long as trie ahs children or we reach end of loop
-			index := text[j] - 'a'
+		for j := i; j < len(text); j++ { //second loop starts at first char and extends as long as trie has children or we reach end of loop.
+			index := text[j] - 'a'        // if we reach node is end we take i (first index), j (second index) and append to list. If we reach end we break and go to next char to try a new word.
 			if node.children[index] == nil {
 				break
 			}

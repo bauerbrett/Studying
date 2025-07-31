@@ -54,7 +54,7 @@ func main() {
 
 	t := NewSolution()
 	t.Insert("apple")
-	fmt.Println(t.Search("apple"))
+	fmt.Println(t.root.children[0])
 	fmt.Println(t.StartsWith("app"))
 	fmt.Println(t.StartsWith("abb"))
 	fmt.Println(t.Search("apples"))
