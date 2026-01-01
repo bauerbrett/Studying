@@ -1,4 +1,4 @@
-Low-Level Local LLM Chatbot Guide: Building from Scratch with Raw Completions
+Low-Level Local LLM Chatbot Guide: Building from Scratch 
 =============================================================================
 
 Introduction and Philosophy
@@ -93,24 +93,60 @@ LLMs are stateless---memory is built by prepending history to the prompt.
 Python
 
 ```
-history = []  # List of "User: ..." and "Assistant: ..." strings
+from llama_cpp import Llama
 
-def build_prompt(user_input: str) -> str:
+llm = Llama(
+    model_path="/home/brett/studying/Notes/LLMs/StarterProjects/models/Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf",
+    n_ctx=8192,
+    n_threads=8,
+    n_gpu_layers=-1,
+    verbose=False
+)
+
+history = []  # Stores formatted message blocks: user and assistant turns
+system_prompt = "You are a helpful, concise assistant. Answer directly with only essential information."
+
+def format_message(role: str, content: str) -> str:
+    return f"<|start_header_id|>{role}<|end_header_id|>\n\n{content}<|eot_id|>"
+
+def chat_turn(user_input: str) -> str:
     global history
-    history.append(f"User: {user_input}")
-    return "\n".join(history) + "\nAssistant:"
+    
+    # Build full prompt in correct order
+    full_prompt = format_message("system", system_prompt)
+    
+    # Add all previous conversation history
+    for msg in history:
+        full_prompt += msg
+    
+    # Add current user message
+    full_prompt += format_message("user", user_input)
+    
+    # Start assistant response
+    full_prompt += "<|start_header_id|>assistant<|end_header_id|>\n\n"
 
-def chat_with_memory(user_input: str) -> str:
-    global history
-    prompt = build_prompt(user_input)
-    response = complete(prompt, stop=["\nUser:", "</s>", "<|eot_id|>"])
-    history.append(f"Assistant: {response}")
-
-    # Prevent context overflow: Keep last ~6000 tokens (rough estimate)
-    if len("\n".join(history)) > 6000:
-        history = history[-10:]  # Keep recent turns
-
+    # Generate
+    output = llm(
+        full_prompt,
+        max_tokens=512,
+        temperature=0.7,
+        top_p=0.95,
+        stop=["<|eot_id|>", "<|end_of_text|>"],
+        echo=False
+    )
+    
+    response = output["choices"][0]["text"].strip()
+    
+    # Update history
+    history.append(format_message("user", user_input))
+    history.append(format_message("assistant", response))
+    
+    # Optional: limit history to prevent context overflow
+    if len(history) > 40:  # ~20 full turns
+        history = history[-40:]
+    
     return response
+
 ```
 
 **Terminal Loop**:
@@ -118,12 +154,15 @@ def chat_with_memory(user_input: str) -> str:
 Python
 
 ```
-print("Local Chatbot Ready (type 'quit' to exit)")
+# Simple REPL
+print("Chatbot ready! Type 'exit' to quit.\n")
 while True:
-    user = input("\nYou: ")
-    if user.lower() == "quit":
+    user = input("You: ").strip()
+    if user.lower() in ["exit", "quit"]:
         break
-    print("\nBot:", chat_with_memory(user))
+    if user:
+        print("Bot:", chat_turn(user))
+        print()  # blank line for readability
 ```
 
 **How memory works**: Full history is in every prompt. Truncation prevents overflow. This is the "raw" way---no vector stores or summaries yet.
@@ -137,38 +176,49 @@ Python
 
 ```
 import numpy as np
-from typing import List
+from llama_cpp import Llama
 
-documents: List[str] = []
-embeddings: List[np.ndarray] = []
+llm = Llama(
+    model_path="/home/brett/studying/Notes/LLMs/StarterProjects/models/nomic-embed-text-v1.5.f32.gguf",
+    n_threads=8,
+    n_gpu_layers=-1,
+    embedding=True,
+    verbose=False
+)
 
-def get_embedding(text: str) -> np.ndarray:
-    emb = llm.embed(text)  # Built-in embedding support
-    return np.array(emb)
+# Load text and chunk
+with open("facts.txt", "r", encoding="utf-8") as f:
+    full_text = f.read()
 
-def add_document(text: str, chunk_size: int = 512, overlap: int = 100):
-    chunks = [text[i:i+chunk_size] for i in range(0, len(text), chunk_size - overlap)]
-    for chunk in chunks:
-        documents.append(chunk)
-        embeddings.append(get_embedding(chunk))
+def create_chunks(text, size=100, overlap=20):
+    words = text.split()
+    chunks = []
+    for i in range(0, len(words), size - overlap):
+        chunk = " ".join(words[i:i+size])
+        if chunk.strip():
+            chunks.append(chunk)
+    return chunks
 
-def cosine_similarity(a: np.ndarray, b: np.ndarray) -> float:
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+chunks = create_chunks(full_text)
+print(f"Created {len(chunks)} chunks")
 
-def retrieve(query: str, k: int = 4) -> List[str]:
-    query_emb = get_embedding(query)
-    scores = [cosine_similarity(query_emb, emb) for emb in embeddings]
-    top_indices = np.argsort(scores)[-k:][::-1]
-    return [documents[i] for i in top_indices]
-```
+embeddings = []
 
-**Load Knowledge** (example):
+for chunk in chunks:
+    text = "search_document: " + chunk
+    vec = np.array(llm.embed(text), dtype=np.float32).flatten()
+    vec /= np.linalg.norm(vec)
+    embeddings.append(vec)
 
-Python
+embeddings = np.vstack(embeddings)
 
-```
-with open("knowledge.txt", "r", encoding="utf-8") as f:
-    add_document(f.read())
+# Save chunks + embeddings
+np.save("chunks.npy", np.array(chunks, dtype=object))
+np.save("embeddings.npy", embeddings)
+
+print("Embeddings saved.")
+print("Chunks shape:", np.load("chunks.npy", allow_pickle=True).shape)
+print("Embeddings shape:", embeddings.shape)
 ```
 
 **Integrate into Chat**:
@@ -176,16 +226,122 @@ with open("knowledge.txt", "r", encoding="utf-8") as f:
 Python
 
 ```
-def chat_with_rag(user_input: str) -> str:
-    relevant_chunks = retrieve(user_input)
-    context = "\n\n".join(relevant_chunks)
-    rag_prompt = f"""Use only the following context to answer the question.
-Context:
-{context}
+from llama_cpp import Llama
+import numpy as np
 
-Question: {user_input}
-Answer:"""
-    return complete(rag_prompt, max_tokens=768)
+# This is just to get rid of annoying pop ups llama gives in the terminal
+import sys, os
+sys.stderr = open(os.devnull, 'w')
+
+llm = Llama(
+    model_path="/home/brett/studying/Notes/LLMs/StarterProjects/models/Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf",
+    n_ctx=8192,
+    n_threads=8,
+    n_gpu_layers=-1,
+    verbose=False,
+    embedding=True
+)
+llm_embed = Llama(
+    model_path="/home/brett/studying/Notes/LLMs/StarterProjects/models/nomic-embed-text-v1.5.f32.gguf",
+    n_ctx=8192,
+    n_threads=8,
+    n_gpu_layers=-1,
+    verbose=False,
+    embedding=True
+)
+
+history = []  # Stores formatted message blocks: user and assistant turns
+system_prompt = "You are a helpful, concise assistant. You will be given context for some questions" \
+", use the context to answer. If the context does not apply use your own judgment. Do not put " \
+"in the response where you got the answer from, just answer directly with only essential information."
+
+print("Loading documentation into chatbot....")
+chunks = np.load("chunks.npy", allow_pickle=True)
+embeddings = np.load("embeddings.npy")  # shape: (N, 4096)
+print("Documents loaded")
+
+
+def format_message(role: str, content: str) -> str:
+    return f"<|start_header_id|>{role}<|end_header_id|>\n\n{content}<|eot_id|>"
+
+def embed_query(query: str) -> np.ndarray:
+    # Add the model-specific prefix
+    text = "search_query: " + query
+
+    # Call embed
+    result = llm_embed.embed(text)
+
+    # If returned as list of lists, flatten and convert to float32
+    if isinstance(result, dict):
+        vec = np.array(result["data"][0]["embedding"], dtype=np.float32)
+    else:
+        vec = np.array(result, dtype=np.float32).flatten()
+
+    # L2 normalize
+    vec /= np.linalg.norm(vec)
+    return vec
+
+def retrieve(query, k=2, min_score=0.2):
+    query_vec = embed_query(query)
+    scores = embeddings @ query_vec
+    top_idx = np.argsort(scores)[::-1]
+    results = []
+    for idx in top_idx[:k]:
+        if scores[idx] < min_score:
+            continue
+        results.append(f"score: {float(scores[idx])} text: {chunks[idx]}")
+    return results
+
+def chat_turn(user_input: str) -> str:
+    global history
+    
+    # Build full prompt in correct order
+    full_prompt = format_message("system", system_prompt)
+    
+    # Add all previous conversation history
+    for msg in history:
+        full_prompt += msg
+    
+    rag_result = retrieve(user_input)
+
+    # Add current user message
+    full_prompt += format_message("user", user_input + "RAG context: " + " ".join(rag_result))
+    
+    # Start assistant response
+    full_prompt += "<|start_header_id|>assistant<|end_header_id|>\n\n"
+
+    # Generate
+    output = llm(
+        full_prompt,
+        max_tokens=512,
+        temperature=0.7,
+        top_p=0.95,
+        stop=["<|eot_id|>", "<|end_of_text|>"],
+        echo=False
+    )
+    
+    response = output["choices"][0]["text"].strip()
+    
+    # Update history
+    history.append(format_message("user", user_input))
+    history.append(format_message("assistant", response))
+    
+    # Optional: limit history to prevent context overflow
+    if len(history) > 40:  # ~20 full turns
+        history = history[-40:]
+    
+    return response
+
+
+# Simple REPL
+print("Chatbot ready! Type 'exit' to quit.\n")
+while True:
+    user = input("You: ").strip()
+    if user.lower() in ["exit", "quit"]:
+        break
+    if user:
+        print("Bot:", chat_turn(user))
+        print()  # blank line for readability
 ```
 
 **How RAG works here**: Semantic search via embeddings from the same model. No external embedder. Retrieval injects context into a single prompt. Combine with memory for full chatbot.
@@ -270,8 +426,8 @@ Security Considerations
 -   **Prompts leak easily**: Users can jailbreak to reveal system instructions.
 -   **LLM ≠ security control**: Sanitize all inputs/outputs like browser data.
 -   **Tool interfaces are the risk**: Validate args strictly; rate-limit; log.
--   Model extraction: Economically infeasible (as you noted).
--   Red-team your build: Try prompt injection to abuse tools.
+-   Model extraction: Economically infeasible.
+
 
 Full Integration & Extensions
 -----------------------------
