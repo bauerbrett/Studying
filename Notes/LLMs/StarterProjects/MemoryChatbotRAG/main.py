@@ -98,8 +98,8 @@ def chat_turn(user_input: str) -> str:
     history.append(format_message("user", user_input))
     history.append(format_message("assistant", response))
     
-    # Optional: limit history to prevent context overflow
-    if len(history) > 40:  # ~20 full turns
+    # limit history to prevent context overflow
+    if len(history) > 40:  
         history = history[-40:]
     
     return response
