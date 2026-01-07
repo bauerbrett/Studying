@@ -169,7 +169,7 @@ def agent_chat(user_input: str) -> str:
 
     response = chat_turn(enhanced_input, rag_context)
 
-    # Tool loop — now with better JSON detection
+    # Tool loop with better JSON detection
     for _ in range(5):
         tool_call = try_parse_tool(response)
 
@@ -209,7 +209,7 @@ Why Both Options?
     Case B: Positional arguments (less common, but possible)
         JSON{"tool": "some_tool", "args": ["value1", "value2"]}
         → args is a list → use func(args) → equivalent to some_tool("value1", "value2")
-Your code handles both safely.
+
 
 Example 1: get_weather (your actual tool)
 Pythonargs = {"location": "cincinnati"}  # dict
