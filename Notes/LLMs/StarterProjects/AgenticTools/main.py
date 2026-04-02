@@ -211,7 +211,7 @@ Why Both Options?
         → args is a list → use func(args) → equivalent to some_tool("value1", "value2")
 
 
-Example 1: get_weather (your actual tool)
+Example 1: get_weather
 Pythonargs = {"location": "cincinnati"}  # dict
 isinstance(args, dict) → True
 → func(**args) → get_weather(location="cincinnati")
